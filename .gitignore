@@ -1,0 +1,21 @@
+# Node
+node_modules/
+
+# Build
+client/dist/
+server/dist/
+
+# Logs
+*.log
+
+# Env
+.env
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+
+# Misc
+uploads/
