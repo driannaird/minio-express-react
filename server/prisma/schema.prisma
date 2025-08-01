@@ -1,0 +1,23 @@
+// Prisma schema for File metadata
+// S_S13: Prisma Schema - `File` model with `bucketName` (most comprehensive)
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model File {
+  id         String   @id @default(uuid())
+  filename   String
+  mimetype   String
+  size       Int      @map("file_size")
+  bucketName String
+  path       String   @unique
+  url        String?  // Optional: pre-signed URL or public URL
+  uploadDate DateTime @default(now()) @map("upload_date")
+
+  @@map("files")
+}
