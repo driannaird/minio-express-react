@@ -72,6 +72,10 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
+![Client Interface](static/client.png)
+
+_User interface for uploading and managing files_
+
 ## API Endpoints
 
 - `POST   /api/files/upload` — Upload file
@@ -84,6 +88,10 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - `GET    /api/files/preview/:id` — Preview image
 
 ## MinIO Console
+
+![MinIO Panel](static/minio-panel.png)
+
+_MinIO dashboard for managing buckets and files_
 
 - Access buckets and files at [http://localhost:9001/buckets](http://localhost:9001/buckets)
 
