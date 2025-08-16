@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/files";
-const PREVIEW_URL = "http://localhost:3000/api/files/preview";
+const API_URL = "http://localhost:9002/api/files";
+const PREVIEW_URL = "http://localhost:9002/api/files/preview";
 
 function App() {
   const [files, setFiles] = useState<any[]>([]);

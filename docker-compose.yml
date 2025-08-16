@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+  # Database service
   db:
     image: postgres:13
     restart: always
@@ -9,10 +10,13 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydb
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
+  # MinIO object storage service
   minio:
     image: minio/minio
     restart: always
@@ -25,6 +29,52 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
+    networks:
+      - app-network
+
+  # Backend server service
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "9002:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_USE_SSL=false
+      - MINIO_BUCKET=files
+    depends_on:
+      - db
+      - minio
+    networks:
+      - app-network
+    volumes:
+      - ./server/uploads:/app/uploads
+
+  # Frontend client service
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "9003:4173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:9002/api
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:
